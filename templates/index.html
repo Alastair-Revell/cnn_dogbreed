@@ -1,0 +1,130 @@
+<style>
+.serif {
+  font-family: Lato, sans-serif, monospace;
+  color: #37474F
+}
+
+.center {
+  margin: auto;
+  text-align: center;
+  width: 50%;
+  border: 3px solid #836953;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+input[type=file] {
+  background-color: #836953;
+  border: none;
+  color: white;
+  padding: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+input[type=file]:hover {
+  background-color: #778899;
+  color: white;
+  border-radius: 5px;
+}
+
+.spin {
+  width: 5em;
+  height: 5em;
+  padding: 0;
+
+  &:hover {
+    color: $blue;
+  }
+
+  &::before,
+  &::after {
+    top: 0;
+    left: 0;
+  }
+
+  &::before {
+    border: 2px solid transparent; // We're animating border-color again
+  }
+
+  &:hover::before {
+    border-top-color: $blue; // Show borders
+    border-right-color: $blue;
+    border-bottom-color: $blue;
+
+    transition:
+      border-top-color 0.15s linear, // Stagger border appearances
+      border-right-color 0.15s linear 0.10s,
+      border-bottom-color 0.15s linear 0.20s;
+  }
+
+  &::after {
+    border: 0 solid transparent; // Makes border thinner at the edges? I forgot what I was doing
+  }
+
+  &:hover::after {
+    border-top: 2px solid $blue; // Shows border
+    border-left-width: 2px; // Solid edges, invisible borders
+    border-right-width: 2px; // Solid edges, invisible borders
+    transform: rotate(270deg); // Rotate around circle
+    transition:
+      transform 0.4s linear 0s,
+      border-left-width 0s linear 0.35s; // Solid edge post-rotation
+  }
+}
+
+.circle {
+  border-radius: 100%;
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    border-radius: 100%;
+  }
+}
+
+</style>
+
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async> </script>
+<script src="drag_drop.js"></script>
+
+
+<script>
+function previewFile(){
+    var preview = document.querySelector('img'); //selects the query named img
+    var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+    var reader  = new FileReader();
+
+    reader.onloadend = function () {
+        preview.src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file); //reads the data as a URL
+    } else {
+        preview.src = "";
+    }
+}
+
+previewFile();  //calls the function named previewFile()
+</script>
+
+</head>
+
+<body>
+  <div class="serif">
+    <h1 align="center">Dog Breed classifier</h1>
+  </div>
+  <div class="serif center">
+      <br>
+      Please Choose your image
+      <input type="file" onchange="previewFile()" ondrop="drop(event)" ondragover="allowDrop(event)"><br>
+      <p>When uploaded you will see a preview of your image below: <br><br><br>
+      <img src="" height="300" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/d/d2/Solid_white.png'">
+      <button class="spin circle">Submit Image</button>
+  </div>
+</body>
